@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Product Catalog</h1>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Product rows will go here -->
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button id="prevBtn" onclick="changePage(-1)" disabled>Previous</button>
+      <button id="nextBtn" onclick="changePage(1)">Next</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

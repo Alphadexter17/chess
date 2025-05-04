@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <div class="bg-white p-4 rounded shadow-lg" style="width: 300px;">
+        <h1 class="text-center mb-4">Weather App</h1>
+        <input id="cityInput" type="text" class="form-control mb-3" placeholder="Enter city">
+        <button id="fetchWeather" class="btn btn-primary w-100 mb-3">Get Weather</button>
+
+        <div id="weatherInfo" class="text-center d-none">
+            <p id="temperature"></p>
+            <p id="humidity"></p>
+            <p id="condition"></p>
+        </div>
+
+        <div id="errorMessage" class="text-center text-danger d-none">
+            <p>City not found, please try again.</p>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music Song Manager</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .form-section { background: #f7f7f7; padding: 18px; border-radius: 8px; margin-bottom: 20px; max-width: 500px; }
+    .form-section input[type="text"] { width: 100%; padding: 7px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 4px; }
+    .form-section label { font-weight: bold; display: block; margin-top: 8px; }
+    .form-section button { background: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 15px; }
+    .form-section button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <h1>Music Song Manager</h1>
+
+  <div class="form-section">
+    <h3>Add New Song</h3>
+    <form id="add-song-form">
+      <label>Song Name</label>
+      <input type="text" name="Songname" required>
+      <label>Film</label>
+      <input type="text" name="Film" required>
+      <label>Music Director</label>
+      <input type="text" name="Music_director" required>
+      <label>Singer</label>
+      <input type="text" name="Singer" required>
+      <label>Actor</label>
+      <input type="text" name="Actor">
+      <label>Actress</label>
+      <input type="text" name="Actress">
+      <button type="submit">Add Song</button>
+    </form>
+  </div>
+
+  <div class="button-bar">
+    <button class="btn btn-insert" onclick="insertSample()">a/b/c) Create DB/Collection & Insert Sample Data</button>
+    <button class="btn btn-list" onclick="showAll()">d) Show Total Count & All Songs</button>
+    <button class="btn btn-list" onclick="showByDirector()">e) List Songs by Music Director</button>
+    <button class="btn btn-list" onclick="showByDirectorSinger()">f) List by Director & Singer</button>
+    <button class="btn btn-danger" onclick="deleteSong()">g) Delete a Song</button>
+    <button class="btn btn-list" onclick="showTable()">k) Show Table of All Songs</button>
+    <button class="btn btn-list" onclick="showBySingerFilm()">i) List by Singer & Film</button>
+    <button class="btn btn-update" onclick="addActorActress()">j) Add Actor/Actress to Song</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    // Add Song Form Submission
+    document.getElementById('add-song-form').onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        Songname: form.Songname.value,
+        Film: form.Film.value,
+        Music_director: form.Music_director.value,
+        Singer: form.Singer.value,
+        Actor: form.Actor.value,
+        Actress: form.Actress.value
+      };
+      await fetch('/api/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      alert('Song added!');
+      form.reset();
+      showTable();
+    };
+
+    async function insertSample() {
+        const data = [
+  { Songname: "Tum Hi Ho", Film: "Aashiqui 2", Music_director: "Mithoon", Singer: "Arijit Singh", Actor: "Aditya Roy Kapur", Actress: "Shraddha Kapoor" },
+  { Songname: "Chaiyya Chaiyya", Film: "Dil Se", Music_director: "A.R. Rahman", Singer: "Sukhwinder Singh", Actor: "Shah Rukh Khan", Actress: "Malaika Arora" },
+];
+
+      await fetch('/api/insertMany', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      alert('Sample data inserted!');
+      showTable();
+    }
+
+    async function showAll() {
+      const res = await fetch('/api/all');
+      const { count, songs } = await res.json();
+      let html = `<p><b>Total Songs:</b> ${count}</p>`;
+      html += renderTable(songs);
+      document.getElementById('output').innerHTML = html;
+    }
+
+    async function showByDirector() {
+      const director = prompt("Enter Music Director:");
+      if (!director) return;
+      const res = await fetch(`/api/by-director/${encodeURIComponent(director)}`);
+      const songs = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Songs by ${director}</h3>` + renderTable(songs);
+    }
+
+    async function showByDirectorSinger() {
+      const director = prompt("Enter Music Director:");
+      const singer = prompt("Enter Singer:");
+      if (!director || !singer) return;
+      const res = await fetch(`/api/by-director-singer?director=${encodeURIComponent(director)}&singer=${encodeURIComponent(singer)}`);
+      const songs = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Songs by ${director} sung by ${singer}</h3>` + renderTable(songs);
+    }
+
+    async function deleteSong() {
+      const songname = prompt("Enter Song Name to delete:");
+      if (!songname) return;
+      const res = await fetch(`/api/delete/${encodeURIComponent(songname)}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Song "${songname}" removed.`);
+      } else {
+        alert('Song not found!');
+      }
+      showTable();
+    }
+
+    async function showTable() {
+      const res = await fetch('/api/table');
+      const songs = await res.json();
+      document.getElementById('output').innerHTML = renderTable(songs);
+    }
+
+    async function showBySingerFilm() {
+      const singer = prompt("Enter Singer:");
+      const film = prompt("Enter Film:");
+      if (!singer || !film) return;
+      const res = await fetch(`/api/by-singer-film?singer=${encodeURIComponent(singer)}&film=${encodeURIComponent(film)}`);
+      const songs = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Songs from "${film}" sung by ${singer}</h3>` + renderTable(songs);
+    }
+
+    async function addActorActress() {
+      const songname = prompt("Enter Song Name to update:");
+      if (!songname) return;
+      const actor = prompt("Enter Actor Name:");
+      const actress = prompt("Enter Actress Name:");
+      if (!actor && !actress) return;
+      await fetch(`/api/add-actor-actress/${encodeURIComponent(songname)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ Actor: actor, Actress: actress })
+      });
+      alert('Song updated!');
+      showTable();
+    }
+
+    function renderTable(songs) {
+      if (!songs.length) return '<p>No data.</p>';
+      let rows = songs.map(s =>
+        `<tr>
+          <td>${s.Music_director || ""}</td>
+          <td>${s.Singer || ""}</td>
+          <td>${s.Songname || ""}</td>
+          <td>${s.Film || ""}</td>
+          <td>${s.Actor || ""}</td>
+          <td>${s.Actress || ""}</td>
+        </tr>`
+      ).join('');
+      return `<table>
+        <tr><th>Music Director</th><th>Singer</th><th>Song Name</th><th>Film Name</th><th>Actor</th><th>Actress</th></tr>
+        ${rows}
+      </table>`;
+    }
+  </script>
+</body>
+</html>

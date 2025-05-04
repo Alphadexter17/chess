@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Listing - Bootstrap E-commerce</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css"/>
+<script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div class="container py-4">
+    <!-- Category Filter Dropdown -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Products</h2>
+      <div class="dropdown">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter by Category
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryList">
+          <li><a class="dropdown-item" href="#" data-category="all">All</a></li>
+          <li><a class="dropdown-item" href="#" data-category="electronics">Electronics</a></li>
+          <li><a class="dropdown-item" href="#" data-category="fashion">Fashion</a></li>
+          <li><a class="dropdown-item" href="#" data-category="home">Home</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="productGrid">
+      <!-- Example Product Card -->
+      <div class="col" data-category="electronics">
+        <div class="card h-100">
+          <img src="" class="card-img-top" alt="Smartphone">
+          <div class="card-body">
+            <h5 class="card-title">Smartphone</h5>
+            <p class="card-text">Latest model, high performance.</p>
+            <p class="card-text fw-bold">$499</p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+      <div class="col" data-category="fashion">
+        <div class="card h-100">
+          <img src="" class="card-img-top" alt="Jacket">
+          <div class="card-body">
+            <h5 class="card-title">Leather Jacket</h5>
+            <p class="card-text">Stylish and comfortable.</p>
+            <p class="card-text fw-bold">$120</p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+      <div class="col" data-category="home">
+        <div class="card h-100">
+          <img src="" class="card-img-top" alt="Blender">
+          <div class="card-body">
+            <h5 class="card-title">Kitchen Blender</h5>
+            <p class="card-text">Perfect for smoothies and more.</p>
+            <p class="card-text fw-bold">$60</p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+      <!-- Add more product cards as needed, updating data-category accordingly -->
+    </div>
+  </div>
+
+  <!-- Simple Filtering Script -->
+  <script>
+    document.querySelectorAll('#categoryList .dropdown-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const category = this.getAttribute('data-category');
+        document.querySelectorAll('#productGrid .col').forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

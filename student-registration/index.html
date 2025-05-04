@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Event Registration Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <style>
+      .form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .form-floating small {
+        color: #6c757d;
+        font-size: 0.875em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container bg-white">
+        <h2 class="text-center mb-4">Event Registration</h2>
+        <form class="needs-validation" novalidate>
+          <!-- Name -->
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Full Name"
+              required
+            />
+            <label for="name"
+              >Full Name <span class="text-danger">*</span></label
+            >
+            <small class="form-text">Enter your full name as per ID</small>
+            <div class="invalid-feedback">Please enter your name.</div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Email Address"
+              required
+            />
+            <label for="email"
+              >Email Address <span class="text-danger">*</span></label
+            >
+            <small class="form-text"
+              >We'll send confirmation to this email</small
+            >
+            <div class="invalid-feedback">Please enter a valid email.</div>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-floating mb-3">
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              placeholder="Phone Number"
+              required
+              pattern="[0-9]{10}"
+            />
+            <label for="phone"
+              >Phone Number <span class="text-danger">*</span></label
+            >
+            <small class="form-text">10 digits, no spaces or dashes</small>
+            <div class="invalid-feedback">
+              Please enter a valid 10-digit phone number.
+            </div>
+          </div>
+
+          <!-- Department -->
+          <div class="form-floating mb-3">
+            <select class="form-select" id="department" required>
+              <option selected disabled value="">Select Department</option>
+              <option value="cse">Computer Science</option>
+              <option value="ece">Electronics</option>
+              <option value="mech">Mechanical</option>
+              <option value="other">Other</option>
+            </select>
+            <label for="department"
+              >Department <span class="text-danger">*</span></label
+            >
+          </div>
+
+          <!-- Events -->
+          <div class="mb-3">
+            <label class="form-label"
+              >Events (Select at least one)
+              <span class="text-danger">*</span></label
+            >
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="event1"
+                required
+              />
+              <label class="form-check-label" for="event1"
+                >Coding Competition</label
+              >
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="event2" />
+              <label class="form-check-label" for="event2">Quiz</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="event3" />
+              <label class="form-check-label" for="event3">Workshop</label>
+            </div>
+            <div class="invalid-feedback">
+              Please select at least one event.
+            </div>
+          </div>
+
+          <!-- Comments -->
+          <div class="form-floating mb-3">
+            <textarea
+              class="form-control"
+              id="comments"
+              placeholder="Comments"
+              style="height: 100px"
+            ></textarea>
+            <label for="comments">Comments</label>
+          </div>
+
+          <!-- Tooltip Example -->
+          <div class="mb-3">
+            <button
+              type="button"
+              class="btn btn-outline-info"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+              title="Click submit to register for selected events"
+            >
+              <i class="bi bi-info-circle"></i> Registration Help
+            </button>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid">
+            <button class="btn btn-primary" type="submit">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Enable tooltips
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Form validation
+      (function () {
+        "use strict";
+        var forms = document.querySelectorAll(".needs-validation");
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+    </script>
+  </body>
+</html>

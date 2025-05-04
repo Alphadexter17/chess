@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Marks Manager</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Student Marks Manager</h1>
+
+  <div class="button-bar">
+    <button class="btn btn-insert" onclick="insertSample()">a/b/c Create DB/Collection & Insert Sample Data</button>
+    <button class="btn btn-list" onclick="showAll()">d) Show Total Count & All Students</button>
+    <button class="btn btn-list" onclick="showDSBDA20()">e) Names with DSBDA > 20</button>
+    <button class="btn btn-update" onclick="updateMarks()">f) Update Marks of Specified Student by 10</button>
+    <button class="btn btn-list" onclick="showAll25()">g) Names with All Marks > 25</button>
+    <button class="btn btn-list" onclick="showMathsScience40()">h) Names with WAD & CNS < 40</button>
+    <button class="btn btn-danger" onclick="removeStudent()">i) Remove Specified Student by Roll No</button>
+    <button class="btn btn-list" onclick="showTable()">j) Show Table of All Students</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    async function insertSample() {
+      const data = [
+        { Name: "Alice", Roll_No: 1, WAD_Marks: 30, CC_Marks: 32, DSBDA_Marks: 28, CNS_Marks: 35, AI_Marks: 34 },
+        { Name: "Bob", Roll_No: 2, WAD_Marks: 15, CC_Marks: 22, DSBDA_Marks: 21, CNS_Marks: 18, AI_Marks: 20 },
+        { Name: "Charlie", Roll_No: 3, WAD_Marks: 40, CC_Marks: 41, DSBDA_Marks: 45, CNS_Marks: 39, AI_Marks: 38 },
+        { Name: "David", Roll_No: 4, WAD_Marks: 25, CC_Marks: 24, DSBDA_Marks: 26, CNS_Marks: 27, AI_Marks: 29 }
+      ];
+      await fetch('/api/insertMany', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      alert('Sample data inserted!');
+    }
+
+    async function showAll() {
+      const res = await fetch('/api/all');
+      const { count, students } = await res.json();
+      let html = `<p><b>Total Students:</b> ${count}</p>`;
+      html += renderTable(students);
+      document.getElementById('output').innerHTML = html;
+    }
+
+    async function showDSBDA20() {
+      const res = await fetch('/api/dsbda20');
+      const names = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Names with DSBDA > 20</h3><ul>${names.map(s => `<li>${s.Name}</li>`).join('')}</ul>`;
+    }
+
+    async function updateMarks() {
+      const rollno = prompt("Enter Roll No of student to update marks by 10:");
+      if (!rollno) return;
+      const res = await fetch(`/api/update/${rollno}`, { method: 'PUT' });
+      const updated = await res.json();
+      if (updated && updated.Name) {
+        alert(`Updated marks for ${updated.Name}`);
+      } else {
+        alert('Student not found!');
+      }
+    }
+
+    async function showAll25() {
+      const res = await fetch('/api/all25');
+      const names = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Names with all marks > 25</h3><ul>${names.map(s => `<li>${s.Name}</li>`).join('')}</ul>`;
+    }
+
+    async function showMathsScience40() {
+      const res = await fetch('/api/maths-science40');
+      const names = await res.json();
+      document.getElementById('output').innerHTML = `<h3>Names with WAD & CNS < 40</h3><ul>${names.map(s => `<li>${s.Name}</li>`).join('')}</ul>`;
+    }
+
+    async function removeStudent() {
+      const rollno = prompt("Enter Roll No of student to remove:");
+      if (!rollno) return;
+      const res = await fetch(`/api/delete/${rollno}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Student with Roll No ${rollno} removed.`);
+      } else {
+        alert('Student not found!');
+      }
+    }
+
+    async function showTable() {
+      const res = await fetch('/api/table');
+      const students = await res.json();
+      document.getElementById('output').innerHTML = renderTable(students);
+    }
+
+    function renderTable(students) {
+      if (!students.length) return '<p>No data.</p>';
+      let rows = students.map(s =>
+        `<tr>
+          <td>${s.Name}</td>
+          <td>${s.Roll_No}</td>
+          <td>${s.WAD_Marks}</td>
+          <td>${s.DSBDA_Marks}</td>
+          <td>${s.CNS_Marks}</td>
+          <td>${s.CC_Marks}</td>
+          <td>${s.AI_Marks}</td>
+        </tr>`
+      ).join('');
+      return `<table>
+        <tr><th>Name</th><th>Roll No</th><th>WAD</th><th>DSBDA</th><th>CNS</th><th>CC</th><th>AI</th></tr>
+        ${rows}
+      </table>`;
+    }
+  </script>
+</body>
+</html>
+<!-- run at http://localhost:3000/ -->

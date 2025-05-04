@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .form-toggle {
+            cursor: pointer;
+            color: #0d6efd;
+        }
+        .form-toggle:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container bg-white">
+            <!-- Login Form -->
+            <div id="login-form">
+                <h2 class="text-center mb-4">Login</h2>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="login-username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="login-username" required>
+                        <div class="error" id="login-username-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="login-password" required>
+                        <div class="error" id="login-password-error"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+                <p class="mt-3 text-center">Don't have an account? <span class="form-toggle" onclick="toggleForms()">Register here</span></p>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="register-form" class="hidden">
+                <h2 class="text-center mb-4">Register</h2>
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                        <div class="error" id="name-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                        <div class="error" id="email-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                        <div class="error" id="username-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" required>
+                        <div class="error" id="password-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile Number</label>
+                        <input type="tel" class="form-control" id="mobile" required>
+                        <div class="error" id="mobile-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" required>
+                        <div class="error" id="dob-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" required>
+                        <div class="error" id="city-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="3" required></textarea>
+                        <div class="error" id="address-error"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <p class="mt-3 text-center">Already have an account? <span class="form-toggle" onclick="toggleForms()">Login here</span></p>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-message" class="alert alert-success hidden text-center"></div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
